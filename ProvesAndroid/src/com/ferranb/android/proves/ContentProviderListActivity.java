@@ -1,5 +1,10 @@
 package com.ferranb.android.proves;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.app.ListActivity;
@@ -14,25 +19,57 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
+import android.widget.SimpleExpandableListAdapter;
 
 public class ContentProviderListActivity  extends ExpandableListActivity  {
 	
-	ExpandableListAdapter mExpandableListAdapter;
+	ExpandableListAdapter mAdapter;
+	
+	String PROVEIDOR = "Proveidor";
+	String DETALL = "Detall";
+	
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_providers);
-     	
-     // Use the ContentUris method to produce the base URI for the contact with _ID == 23.
-      /*  Uri myPerson = ContentUris.withAppendedId(CallLog.Calls.CONTENT_URI, 1);
-        myPerson = CallLog.CONTENT_URI;
-        
-        // myPerson = Uri.withAppendedPath(CallLog.Calls.CONTENT_URI, "");
-        myPerson = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-*/
-        EditText e = (EditText) this.findViewById(R.id.editText1);
-        
+    
+        List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
+        List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
+        for (PackageInfo pack : getPackageManager().getInstalledPackages(PackageManager.GET_PROVIDERS)) {
+        	Map<String, String> curGroupMap = new HashMap<String, String>();
+            groupData.add(curGroupMap);
+            curGroupMap.put(PROVEIDOR, pack.packageName);
+            curGroupMap.put(DETALL, pack.toString());
+            
+            List<Map<String, String>> children = new ArrayList<Map<String, String>>();
+            
+        	ProviderInfo[] providers = pack.providers;
+	        if (providers != null) {
+	            for (ProviderInfo provider : providers) {
+	                Map<String, String> curChildMap = new HashMap<String, String>();
+	                children.add(curChildMap);
+	                curChildMap.put(PROVEIDOR, provider.name);
+	                curChildMap.put(DETALL, provider.toString());
+	               }
+	            childData.add(children);
+	        }
+	    }
+
+       
+        // Set up our adapter
+        mAdapter = new SimpleExpandableListAdapter(
+                this,
+                groupData,
+                android.R.layout.simple_expandable_list_item_1,
+                new String[] { PROVEIDOR, DETALL },
+                new int[] { android.R.id.text1, android.R.id.text2 },
+                childData,
+                android.R.layout.simple_expandable_list_item_2,
+                new String[] { PROVEIDOR, DETALL },
+                new int[] { android.R.id.text1, android.R.id.text2 }
+                );
+        setListAdapter(mAdapter);
+       /*     
         for (PackageInfo pack : getPackageManager().getInstalledPackages(PackageManager.GET_PROVIDERS)) {
 	        ProviderInfo[] providers = pack.providers;
 	        if (providers != null) {
@@ -47,7 +84,7 @@ public class ContentProviderListActivity  extends ExpandableListActivity  {
 	                //Log.d("Example", "provider: " + provider.authority);
 	            }
 	        }
-	    }
+	    }*/
 
 	
 	}     
@@ -103,10 +140,6 @@ public class ContentProviderListActivity  extends ExpandableListActivity  {
         return str.toString();
     }
 	
-	private class ContentProviderExpandableListAdapter extends BaseExpandableListAdapter
-	{
-		
-	}
 	
 	
 	
