@@ -39,7 +39,7 @@ public class ContentProviderListActivity  extends ExpandableListActivity  {
         	Map<String, String> curGroupMap = new HashMap<String, String>();
             groupData.add(curGroupMap);
             curGroupMap.put(PROVEIDOR, pack.packageName);
-            curGroupMap.put(DETALL, pack.toString());
+            curGroupMap.put(DETALL, pack.packageName);
             
             List<Map<String, String>> children = new ArrayList<Map<String, String>>();
             
@@ -49,7 +49,7 @@ public class ContentProviderListActivity  extends ExpandableListActivity  {
 	                Map<String, String> curChildMap = new HashMap<String, String>();
 	                children.add(curChildMap);
 	                curChildMap.put(PROVEIDOR, provider.name);
-	                curChildMap.put(DETALL, provider.toString());
+	                curChildMap.put(DETALL, provider.packageName);
 	               }
 	            childData.add(children);
 	        }
@@ -123,7 +123,7 @@ public class ContentProviderListActivity  extends ExpandableListActivity  {
 	 		do {
 	 			for (int i = 0; i < cur.getColumnCount(); i++)
 	 			{
-	 				//editText.append(",");
+	 		 		//editText.append(",");
 	 				Object o = cur.getString(i);
 	 				if (o == null)
 	 					o = "(null)";
