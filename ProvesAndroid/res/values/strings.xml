@@ -4,4 +4,16 @@
     <string name="app_name">ProvesAndroid</string>
     <string name="gps_button">GPS</string>
     <string name="network_button">Net</string>
+    <string-array name="package_info_list">
+        <item>GET_ACTIVITIES</item>
+    	<item>GET_GIDS</item>
+    	<item>GET_CONFIGURATIONS</item>
+    	<item>GET_INSTRUMENTATION</item>
+    	<item>GET_PERMISSIONS</item>
+    	<item>GET_PROVIDERS</item>
+    	<item>GET_RECEIVERS</item>
+    	<item>GET_SERVICES</item>
+    	<item>GET_SIGNATURES</item>
+    	<item>GET_UNINSTALLED_PACKAGES</item>
+    </string-array>
 </resources>

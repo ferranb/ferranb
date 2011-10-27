@@ -10,7 +10,7 @@ public class ChooseSampleActivity extends SelectActivity implements OnItemClickL
 	protected SelectActivity.ActivityListItem[] getActivityListItems() {
 		return new SelectActivity.ActivityListItem[] {
 		  new SelectActivity.ActivityListItem("Location", LocationActivity.class)
-		, new SelectActivity.ActivityListItem("Content Providers", ContentProviderListActivity.class)
+		, new SelectActivity.ActivityListItem("Content Providers", PackageInfoActivity.class)
 		};
 	}
 	
