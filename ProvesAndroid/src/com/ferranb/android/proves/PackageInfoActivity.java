@@ -41,8 +41,6 @@ public class PackageInfoActivity  extends Activity implements OnItemSelectedList
         
         mSpinner = (Spinner) findViewById(R.id.package_spinner);        
         mSpinner.setOnItemSelectedListener(this);
-        
-   
 	}     
 
 	
@@ -54,7 +52,6 @@ public class PackageInfoActivity  extends Activity implements OnItemSelectedList
     	Cursor cur = null;
          
         try{
-         	// Then query for this specific record:
          	cur = managedQuery(uri, null, null, null, null);
          
 	 		for (int i = 0; i < cur.getColumnCount(); i++)
@@ -63,21 +60,21 @@ public class PackageInfoActivity  extends Activity implements OnItemSelectedList
 	 			str.append(cur.getColumnNames()[i]);
 	 		}
 	 		str.append(" -- ");
-	 		cur.moveToFirst();
-	 		do {
-	 			for (int i = 0; i < cur.getColumnCount(); i++)
-	 			{
-	 		 		//editText.append(",");
-	 				Object o = cur.getString(i);
-	 				if (o == null)
-	 					o = "(null)";
-	 				//editText.append((String)o);
-	 			}
-	 	    } while (cur.moveToNext());
+	 		if (cur.moveToFirst())
+	 		{	
+	 			do {
+		 			for (int i = 0; i < cur.getColumnCount(); i++)
+		 			{
+		 		 		Object o = cur.getString(i);
+		 				if (o == null)
+		 					o = "(null)";
+		 			}
+		 	    } while (cur.moveToNext());
+		 	}
          } catch(Exception e)
          {
          	System.out.print(e.getMessage());
-         	str.append(" -- ");
+         	str.append(" -Error- ");
      	    str.append(e.getMessage());
          } 
 
@@ -89,6 +86,7 @@ public class PackageInfoActivity  extends Activity implements OnItemSelectedList
 	final String DETALL = "D";	
 	final String READ_PERM = "R";
 	final String WRITE_PERM = "W";
+	final String EDIT_TEXT = "E";
 	
 	private void fillExpandableListView(int flag)
 	{
@@ -100,22 +98,27 @@ public class PackageInfoActivity  extends Activity implements OnItemSelectedList
         	Map<String, String> curGroupMap = new HashMap<String, String>();
             groupData.add(curGroupMap);
             curGroupMap.put(TITLE, pack.packageName);
-            curGroupMap.put(DETALL, Integer.toString(flag));
+            curGroupMap.put(DETALL, 		android.provider.Contacts.People.CONTENT_URI.toString());
+            curGroupMap.put(DETALL, 		android.provider.Contacts.People.CONTENT_FILTER_URI.toString());
             
 	        List<Map<String, String>> children = new ArrayList<Map<String, String>>();
 	        for (ProviderInfo provider : pack.providers) {
                 Map<String, String> curChildMap = new HashMap<String, String>();
                 children.add(curChildMap);
                 curChildMap.put(TITLE, provider.name);
-                curChildMap.put(DETALL, "content://"+provider.authority);
-                if (provider.readPermission != null)
-                	curChildMap.put(READ_PERM, provider.readPermission);
-                else
+                
+                Uri uri = new Uri.Builder().scheme("content").authority(provider.authority).build();
+                curChildMap.put(DETALL, uri.toString());                
+                if (provider.readPermission == null)
                 	curChildMap.put(READ_PERM, "No read permission");
-                if (provider.writePermission != null)
-                    curChildMap.put(WRITE_PERM, provider.writePermission);
                 else
+                	curChildMap.put(READ_PERM, provider.readPermission);
+                if (provider.writePermission == null)
                 	curChildMap.put(READ_PERM, "No write permission");
+                else
+                    curChildMap.put(WRITE_PERM, provider.writePermission);
+                String data = getContentProviderString(uri);
+                curChildMap.put(EDIT_TEXT, data);
                 
 	        }
 	        childData.add(children);
@@ -131,12 +134,11 @@ public class PackageInfoActivity  extends Activity implements OnItemSelectedList
                 new int[] { android.R.id.text1, android.R.id.text2 },
                 childData,
                 R.layout.provider_info,
-                new String[] { TITLE, DETALL, READ_PERM, WRITE_PERM },
-                new int[] { R.id.provider_name, R.id.detall, R.id.read_permission, R.id.write_permission }
+                new String[] { TITLE, DETALL, READ_PERM, WRITE_PERM , EDIT_TEXT},
+                new int[] { R.id.provider_name, R.id.detall, R.id.read_permission, R.id.write_permission, R.id.editText}
                 );
         mExpandableListView.setAdapter(mAdapter);	
         mExpandableListView.invalidate();
-		
 	}
 	
 	@Override
@@ -174,8 +176,7 @@ public class PackageInfoActivity  extends Activity implements OnItemSelectedList
 	public void onNothingSelected(AdapterView<?> arg0) {
 		mExpandableListView.setVisibility(View.INVISIBLE);		
 	}
-	
-	
-	
-	
+
+
+
 }

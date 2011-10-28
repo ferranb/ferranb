@@ -1,7 +1,7 @@
 package com.ferranb.android.utils;
 
+
 import com.ferranb.android.proves.R;
-import com.ferranb.android.proves.R.layout;
 
 import android.app.ListActivity;
 import android.content.Intent;

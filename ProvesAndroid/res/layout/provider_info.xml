@@ -29,5 +29,14 @@
                 android:layout_height="wrap_content"
                 android:text="Large Text"
 />
+
+                        <EditText
+                            android:id="@+id/editText"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:inputType="textMultiLine" >
+
+                            <requestFocus />
+                        </EditText>
             
         </LinearLayout>
