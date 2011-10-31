@@ -1,5 +1,7 @@
 package com.ferranb.android.proves;
 
+import com.ferranb.android.location.LocationActivity;
+import com.ferranb.android.packageinfo.PackageInfoActivity;
 import com.ferranb.android.utils.SelectActivity;
 
 import android.widget.AdapterView.OnItemClickListener;
