@@ -16,9 +16,9 @@
         <activity android:name="ChooseSampleActivity">
             
         </activity>
-        <activity android:name="LocationActivity">
+        <activity android:name="com.ferranb.android.location.LocationActivity">
         </activity>
-        <activity android:name=".PackageInfoActivity">
+        <activity android:name="com.ferranb.android.packageinfo.PackageInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

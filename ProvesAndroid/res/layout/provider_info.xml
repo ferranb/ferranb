@@ -32,7 +32,7 @@
 
                         <EditText
                             android:id="@+id/editText"
-                            android:layout_width="match_parent"
+                            android:layout_width="fill_parent"
                             android:layout_height="200dp"
                             android:inputType="textMultiLine" >
 
